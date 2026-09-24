@@ -127,3 +127,43 @@ order by schemaname, tablename, policyname;
 ```
 
 Verifikasi khususnya bahwa `reports` tidak bisa dibaca role `anon`/`authenticated`, jurnal dan media privat hanya dapat dibaca author, serta relasi block menghilangkan follow dua arah dan menyaring konten terkait.
+
+## Private production beta deployment
+
+Supabase is a separate hosted service; it is not deployed to Vercel. Vercel deploys this Next.js application and connects to Supabase using environment variables.
+
+### Vercel Production variables
+
+In **Vercel ? Project ? Settings ? Environment Variables**, add these values to **Production** (and separately to Preview if testers use preview URLs):
+
+| Variable | Required | Visibility |
+| --- | --- | --- |
+| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Browser-safe project URL. |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Yes | Browser-safe only with RLS enabled. |
+| `NEXT_PUBLIC_SITE_URL` | Yes | Exact `https://` production domain. |
+| `TMDB_API_KEY` | Yes | Server-only; never prefix with `NEXT_PUBLIC_`. |
+| `TMDB_API_BASE_URL` | Yes | `https://api.themoviedb.org/3`. |
+| `SUPPORT_URL` or `SUPPORT_EMAIL` | Yes | Public support destination. |
+| `ADMIN_USER_IDS` | Optional | Comma-separated Supabase user UUIDs. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional | Server-only; add only if using server admin actions. |
+
+Do not commit `.env.local`, database URLs, passwords, TMDB keys, service-role keys, or Vercel tokens. Vercel environment changes apply only to new deployments, so redeploy after editing them.
+
+### Supabase production setup
+
+1. Run `npx supabase db push` from the linked repository to apply every migration, including private-beta hardening and film selection.
+2. In Supabase Dashboard ? Authentication ? URL Configuration, set **Site URL** to the exact production domain and add:
+   - `https://YOUR_DOMAIN/auth/confirm`
+   - `https://YOUR_DOMAIN/reset-password`
+   - `http://localhost:3000/**` for local development only
+   - the exact Vercel preview pattern only if preview auth testing is needed.
+3. In Storage, confirm `journal-images` is private. Do not add a public bucket policy.
+4. Test a signed-out visitor, journal author, another user, and a blocked user against public/private journal and image URLs.
+
+### Production smoke test
+
+- Confirm `https://YOUR_DOMAIN/manifest.webmanifest`, `/sw.js`, `/apple-icon`, and `/pwa/icon-192` return over HTTPS.
+- Install from Chrome/Edge; on iPhone Safari use **Share ? Add to Home Screen**.
+- Register, verify email, reset password, logout, and login again.
+- Verify a public journal share URL includes a film title and poster preview; a private journal must not disclose title, reaction, or image metadata in its preview.
+- Create a private journal with an image, then confirm another account cannot load the page or signed image.
