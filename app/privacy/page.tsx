@@ -1,0 +1,2 @@
+import { AppHeader } from "@/components/layout/app-header"; import { PageContainer } from "@/components/layout/page-container";
+export default function PrivacyPage() { return <><AppHeader title="Privasi" compact /><PageContainer><article className="card p-5"><h1 className="font-serif text-3xl">Kebijakan Privasi</h1><p className="mt-4 text-sm leading-7 text-secondary">Kami menyimpan data akun, jurnal, dan interaksi yang diperlukan untuk menjalankan maunonton. Foto jurnal berada di Storage privat dan diakses sesuai visibilitas jurnal.</p></article></PageContainer></>; }

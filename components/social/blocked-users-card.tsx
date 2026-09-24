@@ -1,0 +1,6 @@
+"use client";
+import { useState } from "react";
+import { unblockUser } from "@/app/social/actions";
+import { Button } from "@/components/ui/button";
+import { Feedback } from "@/components/ui/feedback";
+export function BlockedUsersCard({ users }: { users: { id: string; name: string; username: string }[] }) { const [items, setItems] = useState(users); const [message, setMessage] = useState(""); async function unblock(id: string) { const result = await unblockUser(id); if (result.error) { setMessage(result.error); return; } setItems((current) => current.filter((user) => user.id !== id)); } return <section className="card p-5"><p className="eyebrow">Keamanan</p><h2 className="mt-2 font-serif text-2xl">Pengguna diblokir</h2><div className="mt-4 space-y-3">{items.length ? items.map((user) => <div key={user.id} className="flex items-center justify-between gap-3"><div><p className="text-sm font-semibold">{user.name}</p><p className="text-xs text-muted">@{user.username}</p></div><Button size="sm" variant="secondary" onClick={() => unblock(user.id)}>Buka blokir</Button></div>) : <p className="text-sm text-secondary">Belum ada pengguna diblokir.</p>}</div>{message && <Feedback tone="error" title={message} />}</section>; }

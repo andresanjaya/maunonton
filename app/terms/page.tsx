@@ -1,0 +1,2 @@
+import { AppHeader } from "@/components/layout/app-header"; import { PageContainer } from "@/components/layout/page-container";
+export default function TermsPage() { return <><AppHeader title="Ketentuan" compact /><PageContainer><article className="card p-5"><h1 className="font-serif text-3xl">Ketentuan Penggunaan</h1><p className="mt-4 text-sm leading-7 text-secondary">Gunakan maunonton dengan hormat. Jangan unggah konten ilegal, menyalahgunakan hak cipta, atau mengganggu pengguna lain.</p></article></PageContainer></>; }
