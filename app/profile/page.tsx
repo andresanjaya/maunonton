@@ -37,22 +37,20 @@ export default async function ProfilePage() {
 
   return <>
     <AppHeader compact />
-    <PageContainer className="space-y-7">
-      <section className="card p-5">
+    <PageContainer className="space-y-8">
+      <section>
         <div className="flex items-start gap-4">
-          <div className="flex size-20 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[var(--color-accent)] to-[#874c6b] font-serif text-2xl text-white">{initials}</div>
-          <div className="min-w-0 flex-1 pt-1"><h1 className="font-serif text-2xl tracking-tight">{profile.display_name}</h1><p className="mt-0.5 text-sm text-muted">@{profile.username}</p><Button href="/settings" variant="secondary" size="sm" className="mt-3">Pengaturan</Button></div>
+          <div className="flex size-16 shrink-0 items-center justify-center rounded-full bg-[var(--color-surface-soft)] text-xl font-semibold">{initials}</div>
+          <div className="min-w-0 flex-1 pt-1"><h1 className="text-[1.75rem] font-semibold leading-tight tracking-tight">{profile.display_name}</h1><p className="mt-0.5 text-sm text-muted">@{profile.username}</p><Button href="/settings" variant="secondary" size="sm" className="mt-3">Pengaturan</Button></div>
         </div>
-        <p className="mt-5 text-sm leading-6 text-secondary">Menonton pelan-pelan, mengingat lebih lama. Film dan momen kecil di sekitarnya.</p>
-        <dl className="mt-5 grid grid-cols-3 border-t border-[var(--color-border)] pt-4 text-center">
-          <div><dt className="text-xs text-muted">Jurnal</dt><dd className="mt-1 font-serif text-xl">{data?.feed.journals.length ?? 0}</dd></div>
-          <div><dt className="text-xs text-muted">Mengikuti</dt><dd className="mt-1 font-serif text-xl">{data?.followingCount ?? 0}</dd></div>
-          <div><dt className="text-xs text-muted">Pengikut</dt><dd className="mt-1 font-serif text-xl">{data?.followerCount ?? 0}</dd></div>
+        <dl className="mt-6 grid grid-cols-3 border-y border-[var(--color-border)] py-4 text-center">
+          <div className="flex flex-col"><dt className="order-2 mt-1 text-xs text-muted">Jurnal</dt><dd className="order-1 text-lg font-semibold">{data?.feed.journals.length ?? 0}</dd></div>
+          <div className="flex flex-col"><dt className="order-2 mt-1 text-xs text-muted">Mengikuti</dt><dd className="order-1 text-lg font-semibold">{data?.followingCount ?? 0}</dd></div>
+          <div className="flex flex-col"><dt className="order-2 mt-1 text-xs text-muted">Pengikut</dt><dd className="order-1 text-lg font-semibold">{data?.followerCount ?? 0}</dd></div>
         </dl>
-        <form action={signOut}><Button variant="ghost" size="sm" className="mt-5">Keluar</Button></form>
+        <form action={signOut}><Button variant="ghost" size="sm" className="mt-3 px-0">Keluar</Button></form>
       </section>
       <section aria-labelledby="my-journal-heading">
-        <p className="eyebrow">Arsip pribadi</p>
         <h2 id="my-journal-heading" className="section-title">Jurnalku</h2>
         <div className="mt-4">{!data ? <ErrorState /> : data.feed.journals.length ? <JournalFeed kind="profile" initialJournals={data.feed.journals} initialCursor={data.feed.nextCursor} /> : <EmptyState title="Belum ada jurnal" description="Pilih film dan simpan kesan pertamamu di sini." actionLabel="Tulis jurnal" actionHref="/create" />}</div>
       </section>

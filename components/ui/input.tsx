@@ -4,12 +4,14 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & { label: string; hint?
 
 export function Input({ label, hint, error, id, className = "", ...props }: InputProps) {
   const inputId = id ?? props.name;
-  return <label htmlFor={inputId} className="block"><span className="field-label">{label}</span><input id={inputId} className={`field-input ${className}`} aria-invalid={Boolean(error)} {...props}/>{(error || hint) && <span className={`mt-2 block text-xs ${error ? "text-[var(--color-danger)]" : "text-muted"}`}>{error ?? hint}</span>}</label>;
+  const messageId = inputId ? `${inputId}-message` : undefined;
+  return <label htmlFor={inputId} className="block"><span className="field-label">{label}</span><input id={inputId} className={`field-input ${className}`} aria-invalid={Boolean(error)} aria-describedby={error || hint ? messageId : undefined} {...props}/>{(error || hint) && <span id={messageId} className={`mt-2 block text-xs ${error ? "text-[var(--color-danger)]" : "text-muted"}`}>{error ?? hint}</span>}</label>;
 }
 
-type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string; hint?: string };
+type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & { label: string; hint?: string; error?: string };
 
-export function Textarea({ label, hint, id, className = "", ...props }: TextareaProps) {
+export function Textarea({ label, hint, error, id, className = "", ...props }: TextareaProps) {
   const inputId = id ?? props.name;
-  return <label htmlFor={inputId} className="block"><span className="field-label">{label}</span><textarea id={inputId} className={`field-input min-h-32 resize-y ${className}`} {...props}/>{hint && <span className="mt-2 block text-xs text-muted">{hint}</span>}</label>;
+  const messageId = inputId ? `${inputId}-message` : undefined;
+  return <label htmlFor={inputId} className="block"><span className="field-label">{label}</span><textarea id={inputId} aria-invalid={Boolean(error)} aria-describedby={error || hint ? messageId : undefined} className={`field-input min-h-32 resize-y ${className}`} {...props}/>{(error || hint) && <span id={messageId} className={`mt-2 block text-xs ${error ? "text-[var(--color-danger)]" : "text-muted"}`}>{error ?? hint}</span>}</label>;
 }

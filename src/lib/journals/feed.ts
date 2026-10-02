@@ -10,6 +10,7 @@ export type FeedJournal = {
   mood: string;
   rating: number | null;
   reaction: string;
+  visibility: string;
   isSpoiler: boolean;
   coverStoragePath: string | null;
   coverImageUrl: string | null;
@@ -45,6 +46,7 @@ export async function getJournalFeed(kind: FeedKind, cursor?: FeedCursor) {
     mood: journal.mood,
     rating: journal.rating,
     reaction: journal.reaction,
+    visibility: journal.visibility,
     isSpoiler: journal.is_spoiler,
     coverStoragePath: journal.cover_storage_path,
     coverImageUrl: signedUrls[index],

@@ -20,15 +20,14 @@ export default async function ExplorePage() {
   const feed = await loadExploreFeed();
 
   return <>
-    <AppHeader title="Jelajah" eyebrow="Temukan cerita baru" compact />
+    <AppHeader title="Jelajah" compact />
     <PageContainer className="space-y-8">
       <section aria-labelledby="film-heading">
-        <p className="eyebrow">Katalog film</p>
-        <h1 id="film-heading" className="section-title">Temukan yang ingin kamu ingat</h1>
+        <h1 id="film-heading" className="display-title">Cari film</h1>
+        <p className="mt-2 text-sm text-secondary">Temukan film dan cerita di sekitarnya.</p>
         <div className="mt-5"><MovieSearch /></div>
       </section>
-      <section aria-labelledby="explore-feed-heading">
-        <p className="eyebrow">Komunitas</p>
+      <section aria-labelledby="explore-feed-heading" className="border-t border-[var(--color-border)] pt-8">
         <h2 id="explore-feed-heading" className="section-title">Jurnal publik terbaru</h2>
         <div className="mt-4">
           {!feed ? <ErrorState /> : feed.journals.length ? <JournalFeed kind="explore" initialJournals={feed.journals} initialCursor={feed.nextCursor} /> : <EmptyState title="Belum ada jurnal publik" description="Coba lagi ketika komunitas mulai membagikan catatannya." />}

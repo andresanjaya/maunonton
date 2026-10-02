@@ -104,21 +104,17 @@ export function MovieSearch({ selectionMode = "browse", selectedFilm, onSelected
   }
 
   return <div className="space-y-4">
-    <label className="relative block" htmlFor="movie-search">
-      <span className="sr-only">Cari judul film</span>
-      <SearchIcon className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted" />
-      <input id="movie-search" type="search" value={query} onChange={(event) => changeQuery(event.target.value)} placeholder="Cari judul film" className="field-input pl-12" autoComplete="off" />
-    </label>
+    <label className="block" htmlFor="movie-search"><span className="field-label">Cari judul film</span><span className="relative block"><SearchIcon className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted" /><input id="movie-search" type="search" value={query} onChange={(event) => changeQuery(event.target.value)} placeholder="Judul film" className="field-input search-field" autoComplete="off" /></span></label>
 
-    {previewMovie && <FilmDetailPreview movie={previewMovie} savedForJournal={selectionMode === "journal" && isSavedForJournal} onClear={() => { if (selectionMode === "journal") { setInternalJournalSelection(null); onSelectedFilmChange?.(null); } else { setSelectedMovie(null); } setIsSavedForJournal(false); }} />}
+    {previewMovie && <FilmDetailPreview movie={previewMovie} compact={selectionMode === "journal"} savedForJournal={selectionMode === "journal" && isSavedForJournal} onClear={() => { if (selectionMode === "journal") { setInternalJournalSelection(null); onSelectedFilmChange?.(null); } else { setSelectedMovie(null); } setIsSavedForJournal(false); }} />}
 
-    {status === "idle" && !previewMovie && <EmptyState title="Cari film untuk memulai" description="Ketik sedikitnya dua huruf. Hasilnya datang langsung dari TMDB dan belum disimpan ke akunmu." />}
+    {status === "idle" && !previewMovie && <p className="py-4 text-sm text-secondary">Ketik sedikitnya dua huruf untuk mencari film.</p>}
     {status === "loading" && <div aria-live="polite" className="space-y-3"><p className="text-sm text-secondary">Mencari film…</p><div className="skeleton h-44 rounded-[var(--radius-lg)]" /><div className="skeleton h-44 rounded-[var(--radius-lg)]" /></div>}
     {status === "timeout" && <Feedback tone="error" title="Pencarian terlalu lama" description={error} />}
     {status === "configuration" && <Feedback tone="error" title="Pencarian belum dikonfigurasi" description={error} />}
     {status === "error" && <Feedback tone="error" title="Pencarian belum tersedia" description={error} />}
     {status === "empty" && <EmptyState title="Film tidak ditemukan" description="Coba periksa ejaan atau cari dengan judul aslinya." />}
-    {status === "success" && <div className="space-y-3" aria-live="polite">
+    {status === "success" && !(selectionMode === "journal" && previewMovie) && <div className="space-y-3" aria-live="polite">
       <p className="text-sm text-secondary">Hasil untuk <span className="font-semibold text-[var(--color-ink)]">“{query.trim()}”</span></p>
       {results.map((movie) => <MovieResultCard key={movie.id} movie={movie} onSelect={selectMovie} isSelecting={isSelecting} />)}
       {totalPages > 1 && <div className="flex items-center justify-between gap-3 pt-1"><Button variant="secondary" size="sm" disabled={page === 1} onClick={() => setPage((current) => current - 1)}>Sebelumnya</Button><span className="text-xs text-muted">Halaman {page} dari {totalPages}</span><Button variant="secondary" size="sm" disabled={page >= totalPages} onClick={() => setPage((current) => current + 1)}>Berikutnya</Button></div>}

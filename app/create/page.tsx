@@ -8,5 +8,5 @@ export const metadata = { title: "Jurnal baru" };
 export default async function CreatePage() {
   const user = await requireUser();
   const defaultWatchedOn = new Date().toISOString().slice(0, 10);
-  return <><AppHeader title="Jurnal baru" eyebrow="Simpan momennya" compact /><PageContainer><JournalComposer userId={user.id} defaultWatchedOn={defaultWatchedOn} /></PageContainer></>;
+  return <><AppHeader title="Jurnal baru" compact /><PageContainer><JournalComposer userId={user.id} defaultWatchedOn={defaultWatchedOn} /></PageContainer></>;
 }
