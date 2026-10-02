@@ -31,9 +31,9 @@ export async function generateMetadata({ params }: PageProps<"/journals/[journal
   const description = journal.reaction.replace(/\s+/g, " ").trim().slice(0, 160);
   const image = getTmdbImageUrl(film.poster_path, "w780");
   return {
-    title: `${film.title} — jurnal film`,
+    title: `${film.title} - jurnal film`,
     description,
-    openGraph: { type: "article", title: `${film.title} — jurnal film`, description, publishedTime: journal.created_at, images: image ? [{ url: image, alt: `Poster ${film.title}` }] : undefined },
+    openGraph: { type: "article", title: `${film.title} - jurnal film`, description, publishedTime: journal.created_at, images: image ? [{ url: image, alt: `Poster ${film.title}` }] : undefined },
     twitter: { card: image ? "summary_large_image" : "summary" },
   };
 }
